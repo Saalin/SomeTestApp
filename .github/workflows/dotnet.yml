@@ -23,7 +23,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -c Release -r linux-musl-x64 --self-contained true -o publish/
+      run: dotnet publish -c Release -r linux-musl-x64 --self-contained true -o publish/ SomeTestApp.Web/SomeTestApp.Web.csproj
     - name: Archive Artifacts
       uses: actions/upload-artifact@v3
       with:
