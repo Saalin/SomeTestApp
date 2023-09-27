@@ -33,4 +33,5 @@ jobs:
       run: zip -r SomeTestApp.zip publish/
     - name: Send File via SSH
       run: |
-        scp -i ${{ secrets.SSH_PRIVATE_KEY }} -P ${{ secrets.SSH_PORT }} SomeTestApp.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
+        echo ${{ secrets.SSH_PRIVATE_KEY }} > private.key
+        scp -i private.key -P ${{ secrets.SSH_PORT }} SomeTestApp.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
