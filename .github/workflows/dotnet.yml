@@ -29,10 +29,16 @@ jobs:
       with:
         name: some-test-app
         path: publish/
+
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
     - name: Create ZIP archive
-      run: zip -r SomeTestApp.zip publish/
+      run: zip -r SomeTestApp_${{ github.sha }}.zip publish/
     - name: Send File via SSH
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private.key
         chmod 600 private.key
         scp -i private.key -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null SomeTestApp.zip ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}
+        ssh -i private.key -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'rm -rf current; unzip -j SomeTestApp_${{ github.sha }}.zip -d current'
