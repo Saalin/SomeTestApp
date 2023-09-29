@@ -34,6 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Get Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: some-test-app
+        path: publish/
     - name: Create ZIP archive
       run: zip -r SomeTestApp_${{ github.sha }}.zip publish/
     - name: Send File via SSH
